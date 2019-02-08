@@ -1,0 +1,17 @@
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script>    
+    var socket = io();
+    
+
+    $(document).ready(function() {
+        socket.emit("images", "works!");
+        socket.on("image", function(msg) {
+            $("#bilde").attr('src', 'data:image/jpeg;base64,' + msg);
+        });
+    });
+        
+    
+</script>
+
+<img src="" id="bilde">
