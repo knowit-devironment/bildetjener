@@ -20,12 +20,6 @@ http.listen(3000, function(){
 });
 
 app.post("/image", function(req, res) {
-	var headerkey = req.get("securitykey");
-	if(headerkey != appsecret) {
-		res.status(400);
-		res.send("Trolls are no longer pemitted ¯\_(ツ)_/¯");
-		return;
-	}
 	lastImage = req.body.toString('base64');
     io.emit('image', lastImage, { for: 'everyone' });
     res.send("OK");
