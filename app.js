@@ -1,10 +1,11 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
+var appsecret = process.env.APP_SECRET || 'firstLineOfDefense101'; 
 
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-
+var lastImage;
 
 var options = {
     inflate: true,
@@ -17,11 +18,13 @@ app.use(bodyParser.raw(options));
 http.listen(3000, function(){
     console.log('listening on *:3000');
 });
-var lastImage;
+
 app.post("/image", function(req, res) {
-    //var base64Image = Buffer.from(req.body).toString('base64')
-    //console.log(base64Image);
-    //io.emit("image", req,body, {for: 'everyone'});
+	var headerkey = req.get("securitykey");
+	if(headerkey != appsecret) {
+		res.status(400);
+		res.send("Trolls are no longer pemitted ¯\_(ツ)_/¯");
+	}
 	lastImage = req.body.toString('base64');
     io.emit('image', lastImage, { for: 'everyone' });
     res.send("OK");
