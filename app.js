@@ -24,6 +24,7 @@ app.post("/image", function(req, res) {
 	if(headerkey != appsecret) {
 		res.status(400);
 		res.send("Trolls are no longer pemitted ¯\_(ツ)_/¯");
+		return;
 	}
 	lastImage = req.body.toString('base64');
     io.emit('image', lastImage, { for: 'everyone' });
